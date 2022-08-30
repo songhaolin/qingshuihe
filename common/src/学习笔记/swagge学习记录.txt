@@ -1,0 +1,65 @@
+引入依赖：
+<dependencies>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+    </dependencies>
+***********************************************************************************************************
+ 设置鉴权服务器信息配置，同时在这里设置swagger的名称信息等
+ public class AuthorizationServerConfig {
+     @Bean
+     public Docket webApiConfig() {
+         return new Docket(DocumentationType.SWAGGER_2).groupName("webApi")
+                 .apiInfo(webApiInfo()).select().paths(Predicates.not(PathSelectors.regex("/error*")))
+                 .build().globalOperationParameters(getParameterList());
+     }
+
+     private ApiInfo webApiInfo(){
+         return new ApiInfoBuilder().title("Api中心")
+                 .description("从零学习springbott之swagger2")
+                 .version("1.0")
+                 .build();
+     }
+     /**
+      * @Description: 获取请求参数列表,封装到list中，便于上面的两个方法使用
+      * @Date: 2022/8/29
+
+      **/
+     private List<Parameter> getParameterList(){
+         ParameterBuilder clientIdTickt = new ParameterBuilder();
+         ArrayList<Parameter> parameters = new ArrayList<>();
+         //该行是为了检查请求头中的token信息，为了后续做token验证，”false“表示token是非必须的
+         clientIdTickt.name(CommonConstant.TOKEN_STR).description("请求令牌").
+                 modelRef(new ModelRef("String")).parameterType("header").required(false).build();
+         parameters.add(clientIdTickt.build());
+         return parameters;
+     }
+ }
+
+ ***********************************************************************************************************
+ 具体使用：
+ 1.首先需要在启动类中允许使用swagger2
+ SpringBootApplication
+ @EnableSwagger2
+ public class CommonApp {
+     public static void main(String[] args) {
+         ConfigurableApplicationContext run = SpringApplication.run(CommonApp.class);
+         System.out.println("begin start application=====================");
+     }
+ }
+ 2.分别在需要收集体现在api页面的类/方法/参数上加对应的注解
+ 类：ApiModel(value="类描述")
+ 类参数：ApiModelProperty("参数描述")
+ 方法：ApiOperation("方法描述")
+ 方法参数：ApiParam("方法参数描述")
+
+ 进行测试，访问路径如下：http://localhost:8001/swagger-ui.html
+
+ 常用功能是这些，如有其他问题可参看谷歌手参看：https://blog.csdn.net/weixin_46258873/article/details/114794597
