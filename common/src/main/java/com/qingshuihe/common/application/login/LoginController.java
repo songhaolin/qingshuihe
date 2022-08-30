@@ -23,10 +23,9 @@ public class LoginController implements Ilogin {
     @Override
     @PostMapping("/login")
     @ResponseBody
-    public ResultDto<String> login(UserVo userVo) {
+    public ResultDto<String> login(@RequestBody UserVo userVo) {
 
         ResultDto<String> resultDto = new ResultDto<>();
-        resultDto.setCode(CommonConstant.STATUS_SUCCESS);
         resultDto.setMessage("登录成功！");
         resultDto.setObj("username:"+userVo.getUsername()+",password:"+userVo.getPassword());
         return resultDto;
@@ -35,7 +34,10 @@ public class LoginController implements Ilogin {
     @Override
     @PostMapping("/logout")
     @ResponseBody
-    public ResultDto<String> logout(UserVo userVo) {
-        return null;
+    public ResultDto<String> logout(@RequestBody UserVo userVo) {
+        ResultDto<String> resultDto = new ResultDto<>();
+        resultDto.setMessage("登出成功！");
+        resultDto.setObj("username:"+userVo.getUsername()+",password:"+userVo.getPassword());
+        return resultDto;
     }
 }
