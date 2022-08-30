@@ -27,7 +27,7 @@ public class LoginController implements Ilogin {
 
         ResultDto<String> resultDto = new ResultDto<>();
         resultDto.setMessage("登录成功！");
-        resultDto.setObj("username:"+userVo.getUsername()+",password:"+userVo.getPassword());
+        resultDto.setObj("username:" + userVo.getUsername() + ",password:" + userVo.getPassword());
         return resultDto;
     }
 
@@ -37,7 +37,7 @@ public class LoginController implements Ilogin {
     public ResultDto<String> logout(@RequestBody UserVo userVo) {
         ResultDto<String> resultDto = new ResultDto<>();
         resultDto.setMessage("登出成功！");
-        resultDto.setObj("username:"+userVo.getUsername()+",password:"+userVo.getPassword());
+        resultDto.setObj("username:" + userVo.getUsername() + ",password:" + userVo.getPassword());
         return resultDto;
     }
 }

@@ -47,18 +47,18 @@ public class AuthorizationServerConfig {
                 .build().globalOperationParameters(getParameterList());
     }
 
-    private ApiInfo webApiInfo(){
+    private ApiInfo webApiInfo() {
         return new ApiInfoBuilder().title("Api中心")
                 .description("从零学习springbott之swagger2")
                 .version("1.0")
                 .build();
     }
-    /**
-     * @Description: 获取请求参数列表,封装到list中，便于上面的两个方法使用
-     * @Date: 2022/8/29
 
+    /**
+     * @Description: 获取请求参数列表, 封装到list中，便于上面的两个方法使用
+     * @Date: 2022/8/29
      **/
-    private List<Parameter> getParameterList(){
+    private List<Parameter> getParameterList() {
         ParameterBuilder clientIdTickt = new ParameterBuilder();
         ArrayList<Parameter> parameters = new ArrayList<>();
         //该行是为了检查请求头中的token信息，为了后续做token验证，”false“表示token是非必须的
