@@ -35,6 +35,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         //设置权限信息
         List<String> list = new ArrayList<>();
         list.add("/admin/logout");
+        list.add("ROLE_admin");
         loginUserVo.setUserVo(userVo);
         loginUserVo.setPermissions(list);
         return loginUserVo;

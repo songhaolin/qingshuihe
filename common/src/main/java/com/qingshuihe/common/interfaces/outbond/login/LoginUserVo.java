@@ -2,11 +2,13 @@ package com.qingshuihe.common.interfaces.outbond.login;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description:登陆用户自定义spring security下的userDetails类，用来对请求用户做过滤、认证、鉴权
@@ -30,7 +32,8 @@ public class LoginUserVo implements UserDetails, Serializable {
      **/
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        //这里是将格式为list<String>的权限集合通过lamada表达的方式直接转为格式为List<SimpleGrantedAuthority>格式的权限集合，用以鉴权
+        return permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override

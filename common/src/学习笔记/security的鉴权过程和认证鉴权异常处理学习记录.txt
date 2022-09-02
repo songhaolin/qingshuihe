@@ -1,0 +1,19 @@
+基于spring security的鉴权过程，主要是（@EnableGlobalMethodSecurity和@PreAuthorize）
+当用户登陆成功后，会在用户的userDetails信息中包含一个用户的权限集合属性perssions，这个属性决定了用户可以访问的接口或者是用户的角色信息。
+当在spring security配置文件中开启鉴权功能时，该属性会配合鉴权相关的注解对用户的访问进行鉴权控制。
+1.开启鉴权功能：在AuthorizationServerConfig配置文件中增加注解开启鉴权@EnableGlobalMethodSecurity(prePostEnabled = true)
+2.对接口进行权限设置：共有两种方案：
+2.1 在配置文件的configure方法中直接设置”面“级别的接口权限，语法为：//.antMatchers("/admin/**").hasRole("admin")
+2.2 在每个接口上增加注解@PreAuthorize("hasAnyAuthority('/admin/addUser')||hasRole('admin')")，这样更为精细，一般采用这种方案
+用户的权限信息存在UserDetails的permission属性中，
+其中设置角色时默认为"ROLE_"+具体角色，例如"ROLE_admin"表示管理员角色，可与hasRole('admin')的接口匹配
+
+基于spring security的认证&鉴权异常统一处理模块，主要是（AccessDeniedHandler和AuthenticationEntryPoint）
+方案：这里通过使用两个由spring security定好的处理器来做统一处理
+AccessDeniedHandler：权限不足处理器
+AuthenticationEntryPoint：认证失败处理器
+这两个是接口，需要在项目中自行实现，对应的项目中的AccessDeniedHandlerImpl和AuthenticationEntryPointImpl
+可在实现类中自定义发生异常时的处理方案，实现后需要将这两个处理器通过@Autowired注入到的Spring security的配置文件，然后加入到configure方法中，语法为：
+.exceptionHandling().authenticationEntryPoint(authenticationEntryPointImpl).accessDeniedHandler(accessDeniedHandlerImpl);
+注意：在做此类异常处理时，最好使用httpstatus通用的状态码，如非必要不要自定义状态码
+

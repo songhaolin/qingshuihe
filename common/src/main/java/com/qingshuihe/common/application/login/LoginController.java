@@ -2,13 +2,16 @@ package com.qingshuihe.common.application.login;
 
 import com.qingshuihe.common.domain.service.UserBusService;
 import com.qingshuihe.common.interfaces.outbond.dto.LoginResultDo;
+import com.qingshuihe.common.interfaces.outbond.dto.ResultDo;
 import com.qingshuihe.common.interfaces.outbond.login.Ilogin;
+import com.qingshuihe.common.interfaces.outbond.login.RegisterUserVO;
 import com.qingshuihe.common.interfaces.outbond.login.UserVo;
 import com.qingshuihe.common.utils.CommonConstant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -33,10 +36,25 @@ public class LoginController implements Ilogin {
 
     @Override
     @PostMapping("/logout")
+    //鉴权配置，需要在进入借口之前判断当前访问的接口是否在用户的权限集合中
+    @PreAuthorize("hasAnyAuthority('/admin/logout')")
     @ResponseBody
-    public LoginResultDo logout(@RequestBody UserVo userVo) {
-        LoginResultDo loginResultDo = new LoginResultDo();
-        loginResultDo.setMessage("登出成功！");
-        return loginResultDo;
+    public ResultDo logout(@RequestBody UserVo userVo) {
+        ResultDo<String> stringResultDo = new ResultDo<>();
+        stringResultDo.setMessage("登出成功！");
+        return stringResultDo;
     }
+
+    @Override
+    @PostMapping("/addUser")
+    //鉴权配置，需要在进入借口之前判断当前访问的接口是否在用户的权限集合中
+    @PreAuthorize("hasAnyAuthority('/admin/addUser')||hasRole('admin')")
+    @ResponseBody
+    public ResultDo addUser(@RequestBody RegisterUserVO registerUserVO) {
+        ResultDo<String> stringResultDo = new ResultDo<>();
+        stringResultDo.setMessage("注册成功！");
+        return stringResultDo;
+    }
+
+
 }

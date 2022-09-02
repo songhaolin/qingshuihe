@@ -3,16 +3,22 @@ package com.qingshuihe.common.infrastructure.security.config;
 
 import com.google.common.base.Predicates;
 import com.qingshuihe.common.infrastructure.security.filter.JWTSecurityFilter;
+import com.qingshuihe.common.infrastructure.security.handler.AccessDeniedHandlerImpl;
+import com.qingshuihe.common.infrastructure.security.handler.AuthenticationEntryPointImpl;
 import com.qingshuihe.common.utils.CommonConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -37,9 +43,9 @@ import java.util.List;
  * （3）一致性 (接口信息一致，不会出现因开发人员拿到的文档版本不一致，而出现分歧)
  * （4）可测性 (直接在接口文档上进行测试，以方便理解业务
  * /
- *
+ * <p>
  * 该配置文件将swagger+security结合，将请求通过security过滤拦截
- *
+ * <p>
  * /**
  *
  * @Description: swagger配置
@@ -47,8 +53,14 @@ import java.util.List;
  * @Param null:
  **/
 @Configuration//加注解，使得加载容器时能扫描到该配置文件，并且可以加载bean实例
-//鉴权配置文件需要继承WebSecurityConfigurerAdapter才能使用security的一套鉴权体系
+//认证配置文件需要继承WebSecurityConfigurerAdapter才能使用security的一套鉴权体系
+//加注解用来开启全局的鉴权配置，配合接口入口出的注解@PreAuthorize使用，用来鉴定请求用户是否具备所需接口的请求权限
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPointImpl;
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandlerImpl;
 
     @Autowired
     private JWTSecurityFilter jwtSecurityFilter;
@@ -63,21 +75,20 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
 //        super.configure(http);
         //配置对请求的拦截策略。需要指定哪些用户可以访问哪些接口
         http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        .authorizeRequests()
-        .antMatchers("/swagger-ui.html/**","/webjars/**","/swagger-resources/**","/v2/**","/admin/login")
-        .anonymous()
-        .anyRequest()
-        .authenticated()
-         //添加token解析过滤器在用户名密码过滤器之前，可以直接解析带token的请求并获取其权限信息，不用再做权限认证
-        .and().addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .authorizeRequests()
+                .antMatchers("/swagger-ui.html/**", "/webjars/**", "/swagger-resources/**", "/v2/**", "/admin/login").anonymous()
+//                .antMatchers("/admin/**").hasRole("admin") 可以在这里从更大的面设置对于接口的权限限制，方法上的注解更为精细
+                .anyRequest()
+                .authenticated()
+                //添加token解析过滤器在用户名密码过滤器之前，可以直接解析带token的请求并获取其权限信息，不用再做权限认证
+                .and().addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class)
+                //添加认证失败或者权限不够的异常处理过滤器，需要自定义实现这两个过滤器，然后在配置是使用@Autowired注入进来
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPointImpl).accessDeniedHandler(accessDeniedHandlerImpl);
     }
 
     /**
      * @Description: 注册认证管理器，结合
-     *
      * @Date: 2022/8/31
-
      **/
     @Bean
     @Override
@@ -92,10 +103,9 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
      * 作为加解密的算法，用以对用户输入的密码做加解密处理，并与数据库信息对比。
      * 该实例会在认证管理器做认证时对用户输入的密码做加密处理并与数据库信息对比
      * @Date: 2022/8/31
-
      **/
     @Bean
-    public PasswordEncoder getPasswordEncoder(){
+    public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -109,6 +119,7 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
                 .apiInfo(webApiInfo()).select().paths(Predicates.not(PathSelectors.regex("/error*")))
                 .build().globalOperationParameters(getParameterList());
     }
+
     /**
      * @Description: 设置swagger的api文档页面的相关内容
      * @Date: 2022/8/31

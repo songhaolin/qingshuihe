@@ -1,0 +1,18 @@
+1.直接将List<A>转为List<B>,使用lamada方式
+参考：
+public Collection<? extends GrantedAuthority> getAuthorities() {
+        //这里是将格式为list<String>的权限集合通过lamada表达的方式直接转为格式为List<SimpleGrantedAuthority>格式的权限集合，用以鉴权
+        return permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+}
+2.通用的web输出方法，直接将对象返回到前端：
+public static void renderResponse(HttpServletResponse httpServletResponse,String message) throws IOException {
+        //设置请求状态
+        httpServletResponse.setStatus(CommonConstant.STATUS_SUCCESS);
+        //设置返回消息格式
+        httpServletResponse.setContentType("application/json");
+        //设置编码格式
+        httpServletResponse.setCharacterEncoding("utf-8");
+        //通过流输出的页面
+        httpServletResponse.getWriter().print(message);
+    }
+}
