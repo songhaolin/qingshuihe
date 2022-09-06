@@ -30,7 +30,7 @@ public interface CommonConstant {
      * @Date: 2022/8/29
      * @Param null:
      **/
-    String PASS_WORD = "qingshuihe";
+    String PASS_WORD = "$10$8nOb303yc701dni94v2UmufHVrH5fgqwU4e8ftbhUTwAATzCWnM6m";
 
     /**
      * @Description: 请求头的token

@@ -1,7 +1,6 @@
 package com.qingshuihe.common.domain.service.impl;
 
 import com.qingshuihe.common.domain.service.UserBusService;
-import com.qingshuihe.common.infrastructure.security.config.AuthorizationServerConfig;
 import com.qingshuihe.common.interfaces.outbond.dto.BaseDto;
 import com.qingshuihe.common.interfaces.outbond.dto.LoginResultDo;
 import com.qingshuihe.common.interfaces.outbond.login.LoginUserVo;
@@ -11,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class UserBusServiceImpl implements UserBusService {
 
     @Autowired
-    private  AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Override
     public LoginResultDo login(UserVo userVo) {
@@ -38,7 +35,7 @@ public class UserBusServiceImpl implements UserBusService {
          * authenticationManager是在AuthorizationServerConfig中注册的一个bean,这里可以直接注入并使用其认证功能)
          **/
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        if (null==authentication){
+        if (null == authentication) {
             throw new RuntimeException("认证失败！");
         }
         //认证通过后，从认证结果中取出用户登陆鉴权图中的userDetails对象，这里需要自定义一个LoginUserVo对象继承spring提供的userDetails对象
