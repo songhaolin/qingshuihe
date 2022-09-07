@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qingshuihe.common.domain.service.user.mapper.UserMapper">
+    <select id="findUserByName" resultType="com.qingshuihe.common.domain.service.user.entity.UserEntity" parameterType="java.lang.String">
+        select * from sys_user_t where username = #{username}
+    </select>
+</mapper>
