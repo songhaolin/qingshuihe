@@ -1,5 +1,6 @@
 package com.qingshuihe.common.interfaces.outbond.login;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,6 +32,7 @@ public class LoginUserVo implements UserDetails, Serializable {
 
      **/
     @Override
+    @JSONField(serialize = false)//这个注解的作用是当前的实例与json对象互相转换时，不包含该属性。因为该属性为list<list>复杂结构，无法直接做json互转
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //这里是将格式为list<String>的权限集合通过lamada表达的方式直接转为格式为List<SimpleGrantedAuthority>格式的权限集合，用以鉴权
         return permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());

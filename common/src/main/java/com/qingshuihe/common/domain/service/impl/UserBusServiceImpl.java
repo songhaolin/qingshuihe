@@ -1,5 +1,6 @@
 package com.qingshuihe.common.domain.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qingshuihe.common.domain.service.UserBusService;
 import com.qingshuihe.common.interfaces.outbond.dto.BaseDto;
 import com.qingshuihe.common.interfaces.outbond.dto.LoginResultDo;
@@ -7,9 +8,11 @@ import com.qingshuihe.common.interfaces.outbond.login.LoginUserVo;
 import com.qingshuihe.common.interfaces.outbond.login.UserVo;
 import com.qingshuihe.common.utils.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,6 +22,9 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class UserBusServiceImpl implements UserBusService {
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -40,19 +46,31 @@ public class UserBusServiceImpl implements UserBusService {
         }
         //认证通过后，从认证结果中取出用户登陆鉴权图中的userDetails对象，这里需要自定义一个LoginUserVo对象继承spring提供的userDetails对象
         LoginUserVo loginUserVo = (LoginUserVo) authentication.getPrincipal();
-        //使用username生成token,存入loginResultDo对象中返回请求方，作为下一次请求的凭证
-        String token = JWTUtil.createJWT(loginUserVo.getUsername());
-        loginResultDo.setToken(token);
         /**
          * 将loginUserVo存在分布式缓存中，当下一次请求时如果带有token，如果token未过期，会从token中解析出username
          * 根据该username从缓存中取出loginUserVo使用，并再次刷新缓存,从而减少与数据库的交互，这就是无状态登陆
          */
-        //TODO
+        try {
+            stringRedisTemplate.opsForValue().set(loginUserVo.getUsername(), JSONObject.toJSONString(loginUserVo));
+        } catch (Exception e) {
+
+        }
+        //使用username生成token,存入loginResultDo对象中返回请求方，作为下一次请求的凭证
+        String token = JWTUtil.createJWT(loginUserVo.getUsername());
+        loginResultDo.setToken(token);
         return loginResultDo;
     }
 
     @Override
-    public BaseDto logout(UserVo userVo) {
-        return null;
+    public BaseDto logout() {
+
+        //从security上下文中获取通过JWTFilter过滤的鉴权信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+        //清空redis中的用户信息
+        stringRedisTemplate.delete(username);
+        BaseDto baseDto = new BaseDto();
+        baseDto.setMessage("登出成功！");
+        return baseDto;
     }
 }

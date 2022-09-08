@@ -14,6 +14,6 @@ public interface UserBusService {
 
     LoginResultDo login(UserVo userVo);
 
-    BaseDto logout(UserVo userVo);
+    BaseDto logout();
 
 }
