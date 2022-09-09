@@ -10,21 +10,21 @@ import lombok.Data;
  * @Author: shl
  * @Date: 2022/8/30
  **/
-@ApiModel(value = "用户登录信息")
+@ApiModel(value = "用户角色信息")
 @Data
-public class UserVo extends BaseVo {
+public class RoleVo extends BaseVo {
     /**
      * @Description: 登陆用户名
      * @Date: 2022/8/30
      * @Param null:
      **/
-    @ApiModelProperty("用户登录名")
-    private String username;
+    @ApiModelProperty("角色名称")
+    private String name;
     /**
      * @Description: 登录密码
      * @Date: 2022/8/30
      * @Param null:
      **/
-    @ApiModelProperty("用户登录密码")
-    private String password;
+    @ApiModelProperty("角色代码")
+    private String code;
 }

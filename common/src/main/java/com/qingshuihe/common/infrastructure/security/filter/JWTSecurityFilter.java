@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,6 +31,8 @@ import java.io.IOException;
 public class JWTSecurityFilter extends OncePerRequestFilter {
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
@@ -38,6 +41,7 @@ public class JWTSecurityFilter extends OncePerRequestFilter {
 
     private void checkToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String token = httpServletRequest.getHeader(CommonConstant.TOKEN_STR);
+//        String password = passwordEncoder.encode(CommonConstant.PASS_WORD);
         if (StringUtils.isNotEmpty(token)){
             String username = JWTUtil.parseJWT(token).getSubject();
             //根据token中解析出的username从缓存中获取userdetails信息，如果获取到redis信息，则将用户信息存入上下文中,并跳过后续的
@@ -49,7 +53,7 @@ public class JWTSecurityFilter extends OncePerRequestFilter {
                  * 新建的用户名密码权限管理器，将上面从redis中获取的权限信息直接塞进管理器，加入认证管理器上下文中即可
                  **/
                 //
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginUserVo.getUsername(), null, loginUserVo.getAuthorities());
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginUserVo, null, loginUserVo.getAuthorities());
                 //将用户信息放入security的上下文根中，不用再做权限认证了
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }

@@ -12,7 +12,13 @@ public interface Ilogin {
     @ApiOperation("用户登出")
     BaseDto logout();
 
-    @ApiOperation("注册用户")
-    ResultDo addUser(RegisterUserVO registerUserVO);
+    @ApiOperation("更改用户")
+    ResultDo modifyUser(RegisterUserVO registerUserVO);
+
+    @ApiOperation("更改角色")
+    ResultDo modifyRole(RoleVo roleVo);
+
+    @ApiOperation("更改权限")
+    ResultDo modifyPermission(PermissionVo permissionVo);
 
 }

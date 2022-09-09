@@ -29,6 +29,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         loginUserVo.setUserVo(userVo);
         List ls = new ArrayList<String>();
         ls.add("/admin/logout");
+        ls.add("ROLE_admin");
         loginUserVo.setPermissions(ls);
         return loginUserVo;
     }

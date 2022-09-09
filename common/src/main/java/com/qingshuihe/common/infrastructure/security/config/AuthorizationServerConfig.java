@@ -3,14 +3,11 @@ package com.qingshuihe.common.infrastructure.security.config;
 
 import com.google.common.base.Predicates;
 import com.qingshuihe.common.infrastructure.security.filter.JWTSecurityFilter;
-import com.qingshuihe.common.infrastructure.security.handler.AccessDeniedHandlerImpl;
-import com.qingshuihe.common.infrastructure.security.handler.AuthenticationEntryPointImpl;
 import com.qingshuihe.common.utils.CommonConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;

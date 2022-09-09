@@ -4,9 +4,7 @@ import com.qingshuihe.common.domain.service.UserBusService;
 import com.qingshuihe.common.interfaces.outbond.dto.BaseDto;
 import com.qingshuihe.common.interfaces.outbond.dto.LoginResultDo;
 import com.qingshuihe.common.interfaces.outbond.dto.ResultDo;
-import com.qingshuihe.common.interfaces.outbond.login.Ilogin;
-import com.qingshuihe.common.interfaces.outbond.login.RegisterUserVO;
-import com.qingshuihe.common.interfaces.outbond.login.UserVo;
+import com.qingshuihe.common.interfaces.outbond.login.*;
 import io.swagger.annotations.ApiModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,14 +40,26 @@ public class LoginController implements Ilogin {
     }
 
     @Override
-    @PostMapping("/addUser")
+    @PostMapping("/modifyUser")
     //鉴权配置，需要在进入借口之前判断当前访问的接口是否在用户的权限集合中
-    @PreAuthorize("hasAnyAuthority('/admin/addUser')||hasRole('admin')")
+    @PreAuthorize("hasAnyAuthority('/admin/modifyUser')||hasRole('admin')")
     @ResponseBody
-    public ResultDo addUser(@RequestBody RegisterUserVO registerUserVO) {
-        ResultDo<String> stringResultDo = new ResultDo<>();
-        stringResultDo.setMessage("注册成功！");
-        return stringResultDo;
+    public ResultDo modifyUser(@RequestBody RegisterUserVO registerUserVO) {
+        return userBusService.modifyUser(registerUserVO);
+    }
+
+    @Override
+    @PostMapping("/modifyRole")
+    @PreAuthorize("hasAnyAuthority('/admin/modifyUser')||hasRole('admin')")
+    public ResultDo modifyRole(@RequestBody RoleVo roleVo) {
+        return userBusService.modifyRole(roleVo);
+    }
+
+    @Override
+    @PostMapping("/modifyPermission")
+    @PreAuthorize("hasAnyAuthority('/admin/modifyPermissin')||hasRole('admin')")
+    public ResultDo modifyPermission(@RequestBody PermissionVo permissionVo) {
+        return userBusService.modifyPermission(permissionVo);
     }
 
 
