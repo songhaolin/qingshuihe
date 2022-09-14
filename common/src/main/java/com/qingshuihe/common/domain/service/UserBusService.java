@@ -4,10 +4,8 @@ package com.qingshuihe.common.domain.service;
 import com.qingshuihe.common.interfaces.outbond.dto.BaseDto;
 import com.qingshuihe.common.interfaces.outbond.dto.LoginResultDo;
 import com.qingshuihe.common.interfaces.outbond.dto.ResultDo;
-import com.qingshuihe.common.interfaces.outbond.login.PermissionVo;
-import com.qingshuihe.common.interfaces.outbond.login.RegisterUserVO;
-import com.qingshuihe.common.interfaces.outbond.login.RoleVo;
-import com.qingshuihe.common.interfaces.outbond.login.UserVo;
+import com.qingshuihe.common.interfaces.outbond.dto.ResultPageDo;
+import com.qingshuihe.common.interfaces.outbond.login.*;
 
 /**
  * @Description: 用户业务相关服务
@@ -26,4 +24,13 @@ public interface UserBusService {
 
     ResultDo modifyPermission(PermissionVo permissionVo);
 
+    ResultDo modifyRolePermissionRelation(RolePermissionRelationVo rolePermissionRelationVo);
+
+    ResultDo modifyRoleUserRelation(RoleUserRelationVo roleUserRelationVo);
+
+    ResultPageDo<RegisterUserVO> queryUser( QueryPageVo<RegisterUserVO> queryPageVo);
+
+    ResultPageDo<RoleVo> queryRole( QueryPageVo<RoleVo> queryPageVo);
+
+    ResultPageDo<PermissionVo> queryPermission( QueryPageVo<PermissionVo> queryPageVo);
 }

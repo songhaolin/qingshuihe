@@ -1,5 +1,7 @@
 package com.qingshuihe.common.utils;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author: shl
@@ -14,10 +16,17 @@ public class StringUtils {
         if (object.toString().isEmpty() || object.toString().trim().isEmpty()) {
             return true;
         }
+
+        if (object instanceof List){
+            if (((List<?>) object).size()==0){
+                return true;
+            }
+        }
         return false;
     }
 
     public static boolean isNotEmpty(Object object) {
         return !isEmpty(object);
     }
+
 }

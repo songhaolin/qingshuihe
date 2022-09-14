@@ -1,14 +1,13 @@
 package com.qingshuihe.common.domain.service.user.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.qingshuihe.common.domain.service.user.entity.UserEntity;
 import com.qingshuihe.common.domain.service.user.UserService;
+import com.qingshuihe.common.domain.service.user.entity.UserEntity;
 import com.qingshuihe.common.domain.service.user.mapper.UserMapper;
 import com.qingshuihe.common.interfaces.outbond.login.LoginUserVo;
 import com.qingshuihe.common.interfaces.outbond.login.UserVo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,9 +26,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         userVo.setPassword(userEntity.getPassword());
         LoginUserVo loginUserVo = new LoginUserVo();
         loginUserVo.setUserVo(userVo);
-        List ls = new ArrayList<String>();
-        ls.add("/admin/logout");
-        ls.add("ROLE_admin");
+        //获取用户权限信息
+        List ls = baseMapper.getUserPermission(userEntity.getId());
+        //获取用户角色信息
+        List<String> userRoleList = baseMapper.getUserRole(userEntity.getId());
+        for (String role : userRoleList) {
+            ls.add(role);
+        }
         loginUserVo.setPermissions(ls);
         return loginUserVo;
     }
