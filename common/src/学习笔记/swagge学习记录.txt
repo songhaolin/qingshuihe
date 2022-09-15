@@ -63,3 +63,53 @@
  进行测试，访问路径如下：http://localhost:8001/swagger-ui.html
 
  常用功能是这些，如有其他问题可参看谷歌手参看：https://blog.csdn.net/weixin_46258873/article/details/114794597
+
+ *********************************************swagger2升级为3.0.0版本的改动*************************************************************************
+swagger升级到3.0.0版本，支持附件上传下载功能
+ 1.升级swagger-ui，swagger2到3.0.0版本
+ <dependencies>
+         <dependency>
+             <groupId>io.springfox</groupId>
+             <artifactId>springfox-swagger2</artifactId>
+             <version>3.0.0</version>
+         </dependency>
+         <dependency>
+             <groupId>io.springfox</groupId>
+             <artifactId>springfox-swagger-ui</artifactId>
+             <version>3.0.0</version>
+         </dependency>
+     </dependencies>
+ 2.引入springfox-boot-starter的3.0.0版本的依赖
+ <dependency>
+             <groupId>io.springfox</groupId>
+             <artifactId>springfox-boot-starter</artifactId>
+             <version>3.0.0</version>
+         </dependency>
+ 3.修改swagger的配置文件
+ @Bean
+     public Docket webApiConfig(){
+         return new Docket(DocumentationType.SWAGGER_2).groupName("webApi").apiInfo(webApiInfo()).select().paths(PathSelectors.regex("/error").negate()).build().globalRequestParameters(getParameterList());
+     }
+     /**
+     * @Description: 设置swagger的api文档页面的相关内容
+     * @Date: 2022/8/31
+     **/
+     private ApiInfo webApiInfo(){
+         return new ApiInfoBuilder().title("API中心").description("spring boot 从零开始").version("1.0").build();
+     }
+     /**
+       * @Description: 获取请求参数列表, 封装到list中，便于上面的两个方法使用
+       * @Date: 2022/9/15
+       **/
+     private List<RequestParameter> getParameterList(){
+         List<RequestParameter> parameters = new ArrayList<>();
+         parameters.add(new RequestParameterBuilder()
+                 .name(CommonConstant.TOKEN_STR)
+                 .description("请求令牌")
+                 .in(ParameterType.HEADER)
+                 .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
+                 .required(false)
+                 .build());
+         return parameters;
+     }
+ 4.访问地址为http://127.0.0.1:8080/swagger-ui/index.html#)
