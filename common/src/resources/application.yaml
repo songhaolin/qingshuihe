@@ -43,4 +43,8 @@ mybatis-plus:
   configuration:
 #    设置打印sql信息到控制台
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+#    设置逻辑删除
+  global-config:
+    db-config:
+      logic-delete-field: enable
+      logic-delete-value: 1

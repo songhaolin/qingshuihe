@@ -1,7 +1,6 @@
 package com.qingshuihe.common.infrastructure.security.config;
 
 
-import com.google.common.base.Predicates;
 import com.qingshuihe.common.infrastructure.security.filter.JWTSecurityFilter;
 import com.qingshuihe.common.utils.CommonConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +17,12 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.schema.ModelRef;
+import springfox.documentation.builders.RequestParameterBuilder;
+import springfox.documentation.schema.ScalarType;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Parameter;
+import springfox.documentation.service.ParameterType;
+import springfox.documentation.service.RequestParameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -73,7 +73,7 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
         //配置对请求的拦截策略。需要指定哪些用户可以访问哪些接口
         http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/swagger-ui.html/**", "/webjars/**", "/swagger-resources/**", "/v2/**", "/admin/login").anonymous()
+                .antMatchers("/swagger-ui/*", "/webjars/**", "/swagger-resources/**", "/v2/**", "/admin/login").anonymous()
 //                .antMatchers("/admin/**").hasRole("admin") 可以在这里从更大的面设置对于接口的权限限制，方法上的注解更为精细
                 .anyRequest()
                 .authenticated()
@@ -106,39 +106,71 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+
+    //****************************************swagger2.7.0版本的配置，不支持在页面做附件上传下载功能************************
+
     /**
      * @Description: 注册swagger的实例，配置swagger的相关内容
      * @Date: 2022/8/31
      **/
+//    @Bean
+//    public Docket webApiConfig() {
+//        return new Docket(DocumentationType.SWAGGER_2).groupName("webApi")
+//                .apiInfo(webApiInfo()).select().paths(Predicates.not(PathSelectors.regex("/error*")))
+//                .build().globalOperationParameters(getParameterList());
+//    }
+//
+//    /**
+//     * @Description: 设置swagger的api文档页面的相关内容
+//     * @Date: 2022/8/31
+//     **/
+//    private ApiInfo webApiInfo() {
+//        return new ApiInfoBuilder().title("Api中心")
+//                .description("从零学习springbott之swagger2")
+//                .version("1.0")
+//                .build();
+//    }
+//
+//    /**
+//     * @Description: 获取请求参数列表, 封装到list中，便于上面的两个方法使用
+//     * @Date: 2022/8/29
+//     **/
+//    private List<Parameter> getParameterList() {
+//        ParameterBuilder clientIdTickt = new ParameterBuilder();
+//        ArrayList<Parameter> parameters = new ArrayList<>();
+//        //该行是为了检查请求头中的token信息，为了后续做token验证，”false“表示token是非必须的
+//        clientIdTickt.name(CommonConstant.TOKEN_STR).description("请求令牌").
+//                modelRef(new ModelRef("String")).parameterType("header").required(false).build();
+//        parameters.add(clientIdTickt.build());
+//        return parameters;
+//    }
+
+    //****************************************升级swagger到3.0.0版本，支持在页面做附件上传下载功能************************
+
     @Bean
-    public Docket webApiConfig() {
-        return new Docket(DocumentationType.SWAGGER_2).groupName("webApi")
-                .apiInfo(webApiInfo()).select().paths(Predicates.not(PathSelectors.regex("/error*")))
-                .build().globalOperationParameters(getParameterList());
+    public Docket webApiConfig(){
+        return new Docket(DocumentationType.SWAGGER_2).groupName("webApi").apiInfo(webApiInfo()).select().paths(PathSelectors.regex("/error").negate()).build().globalRequestParameters(getParameterList());
     }
-
     /**
-     * @Description: 设置swagger的api文档页面的相关内容
-     * @Date: 2022/8/31
-     **/
-    private ApiInfo webApiInfo() {
-        return new ApiInfoBuilder().title("Api中心")
-                .description("从零学习springbott之swagger2")
-                .version("1.0")
-                .build();
+    * @Description: 设置swagger的api文档页面的相关内容
+    * @Date: 2022/8/31
+    **/
+    private ApiInfo webApiInfo(){
+        return new ApiInfoBuilder().title("API中心").description("spring boot 从零开始").version("1.0").build();
     }
-
     /**
-     * @Description: 获取请求参数列表, 封装到list中，便于上面的两个方法使用
-     * @Date: 2022/8/29
-     **/
-    private List<Parameter> getParameterList() {
-        ParameterBuilder clientIdTickt = new ParameterBuilder();
-        ArrayList<Parameter> parameters = new ArrayList<>();
-        //该行是为了检查请求头中的token信息，为了后续做token验证，”false“表示token是非必须的
-        clientIdTickt.name(CommonConstant.TOKEN_STR).description("请求令牌").
-                modelRef(new ModelRef("String")).parameterType("header").required(false).build();
-        parameters.add(clientIdTickt.build());
+      * @Description: 获取请求参数列表, 封装到list中，便于上面的两个方法使用
+      * @Date: 2022/9/15
+      **/
+    private List<RequestParameter> getParameterList(){
+        List<RequestParameter> parameters = new ArrayList<>();
+        parameters.add(new RequestParameterBuilder()
+                .name(CommonConstant.TOKEN_STR)
+                .description("请求令牌")
+                .in(ParameterType.HEADER)
+                .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
+                .required(false)
+                .build());
         return parameters;
     }
 }
