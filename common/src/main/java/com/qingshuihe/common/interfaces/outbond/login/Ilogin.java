@@ -4,8 +4,9 @@ import com.qingshuihe.common.interfaces.outbond.dto.BaseDto;
 import com.qingshuihe.common.interfaces.outbond.dto.LoginResultDo;
 import com.qingshuihe.common.interfaces.outbond.dto.ResultDo;
 import com.qingshuihe.common.interfaces.outbond.dto.ResultPageDo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
+@Api(tags = "登录管理")
 public interface Ilogin {
     @ApiOperation("用户登录")
     LoginResultDo login(UserVo userVo);

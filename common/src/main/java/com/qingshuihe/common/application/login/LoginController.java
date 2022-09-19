@@ -6,7 +6,6 @@ import com.qingshuihe.common.interfaces.outbond.dto.LoginResultDo;
 import com.qingshuihe.common.interfaces.outbond.dto.ResultDo;
 import com.qingshuihe.common.interfaces.outbond.dto.ResultPageDo;
 import com.qingshuihe.common.interfaces.outbond.login.*;
-import io.swagger.annotations.ApiModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
  * @Author: shl
  * @Date: 2022/8/29
  **/
-@ApiModel(value = "登录管理")
 @RestController
 @RequestMapping("/admin")
 public class LoginController implements Ilogin {
