@@ -117,8 +117,14 @@ public class UserBusServiceImpl implements UserBusService {
         ResultDo<RegisterUserVO> registerUserVOResultDo = new ResultDo<>();
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(registerUserVO, userEntity);
-        //插入数据库的密码应该进行加密
-        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        //插入数据库的密码应该进行加密,如果外部传入的密码不为空，则需要加密后存储数据库
+        if (StringUtils.isNotEmpty(userEntity.getPassword())) {
+            userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        }
+        //如果传入的数据已经存在且密码为空，则保持原来的密码不变
+        if (StringUtils.isNotEmpty(userEntity.getId())&&StringUtils.isEmpty(userEntity.getPassword())){
+            userEntity.setPassword(userService.getById(userEntity.getId()).getPassword());
+        }
         if (!userService.saveOrUpdate(userEntity)) {
             registerUserVOResultDo.setCode(CommonConstant.STATUS_ERROR);
             registerUserVOResultDo.setMessage("修改用户信息失败！");

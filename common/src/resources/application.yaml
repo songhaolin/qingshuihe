@@ -10,6 +10,27 @@ spring:
     multipart:
       max-file-size: 1024MB
       max-request-size: 1024MB
+
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    template:
+      default-topic: qingshuihe
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: qingshuiheGroup
+      enable-auto-commit: true
+      auto-commit-interval: 1000
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    properties:
+      security:
+        protocol: SASL_PLAINTEXT
+      sasl:
+        mechanism: PLAIN
+        jaas:
+          config: 'org.apache.kafka.common.security.scram.ScramLoginModule required username="qingshuihe" password="qingshuihe";'
 #设置redis的配置信息
 redis-config:
   pool:

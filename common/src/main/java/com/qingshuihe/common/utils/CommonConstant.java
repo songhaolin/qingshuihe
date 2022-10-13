@@ -39,4 +39,9 @@ public interface CommonConstant {
      * @Param null:
      **/
     String TOKEN_STR = "token";
+
+    //mq日志topic
+    String KAFKA_TOPIC_QINGSHUIHE_LOG = "qingshuiheLog";
+    //mq日志group
+    String KAFKA_GROUP_QINGSHUIHE_LOG ="qingshuiheLogGroup";
 }

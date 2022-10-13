@@ -12,9 +12,9 @@ import java.util.List;
 @Api(tags = "文件上传下载")
 public interface IUpload {
 
-    @ApiOperation(value = "文件上传")
+    @ApiOperation(value = "/common/uploadFiles",notes = "文件上传")
     ResultDo<List<FileVo>> uploadFiles(MultipartFile[] files);
 
-    @ApiOperation(value = "文件下载")
+    @ApiOperation(value = "/common/downloadFiles",notes = "文件下载")
     void  downloadFiles(HttpServletResponse response,List<String> fileIds) throws IOException;
 }

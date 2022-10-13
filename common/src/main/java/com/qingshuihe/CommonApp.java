@@ -15,6 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @MapperScan("com.qingshuihe.common.domain.service.user.mapper")
 @MapperScan("com.qingshuihe.common.domain.service.role.mapper")
 @MapperScan("com.qingshuihe.common.domain.service.attach.mapper")
+@MapperScan("com.qingshuihe.common.domain.service.log.mapper")
 @EnableSwagger2
 public class CommonApp {
     public static void main(String[] args) {

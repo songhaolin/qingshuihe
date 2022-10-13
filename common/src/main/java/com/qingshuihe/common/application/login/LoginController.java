@@ -25,6 +25,7 @@ public class LoginController implements Ilogin {
     @Override
     @PostMapping("/login")
     @ResponseBody
+//    @LogAnnotation
     public LoginResultDo login(@RequestBody UserVo userVo) {
         return userBusService.login(userVo);
     }
