@@ -1,7 +1,7 @@
 package com.qingshuihe.common.infrastructure.security.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qingshuihe.common.interfaces.outbond.login.LoginUserVo;
+import com.qingshuihe.common.interfaces.outbond.admin.vo.LoginUserVo;
 import com.qingshuihe.common.utils.CommonConstant;
 import com.qingshuihe.common.utils.JWTUtil;
 import com.qingshuihe.common.utils.StringUtils;

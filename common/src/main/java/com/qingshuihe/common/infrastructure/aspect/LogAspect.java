@@ -1,9 +1,9 @@
 package com.qingshuihe.common.infrastructure.aspect;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qingshuihe.common.domain.service.log.entity.LogEntity;
+import com.qingshuihe.common.domain.log.entity.LogEntity;
 import com.qingshuihe.common.infrastructure.mq.ProductMessageHandler;
-import com.qingshuihe.common.interfaces.outbond.login.LoginUserVo;
+import com.qingshuihe.common.interfaces.outbond.admin.vo.LoginUserVo;
 import io.swagger.annotations.ApiOperation;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

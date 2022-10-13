@@ -1,8 +1,8 @@
 package com.qingshuihe.common.infrastructure.common.upload.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.qingshuihe.common.domain.service.attach.AttachService;
-import com.qingshuihe.common.domain.service.attach.entity.AttachEntity;
+import com.qingshuihe.common.domain.attach.AttachService;
+import com.qingshuihe.common.domain.attach.entity.AttachEntity;
 import com.qingshuihe.common.infrastructure.common.upload.UploadFileService;
 import com.qingshuihe.common.infrastructure.common.upload.UploadProperties;
 import com.qingshuihe.common.interfaces.outbond.common.FileVo;

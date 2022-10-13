@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qingshuihe.common.domain.admin.user.mapper.UserMapper">
+    <select id="findUserByName" resultType="com.qingshuihe.common.domain.admin.user.entity.UserEntity" parameterType="java.lang.String">
+        select * from sys_user_t where username = #{username}
+    </select>
+
+
+    <select id="getUserPermission" resultType="java.lang.String" parameterType="java.lang.Long">
+        SELECT
+            c.url
+        FROM
+            sys_role_t a,
+            sys_user_t b,
+            sys_permission_t c,
+            sys_role_user_relation_t d,
+            sys_role_permission_relation_t e
+        WHERE
+            a.id = d.role_id
+          AND b.id = d.user_id
+          AND a.id = e.role_id
+          AND c.id = e.permission_id
+          AND b.id = #{userId}
+    </select>
+    <select id="getUserRole" resultType="java.lang.String" parameterType="java.lang.Long">
+
+        SELECT
+            a.`code`
+        FROM
+            sys_role_t a,
+            sys_user_t b,
+            sys_role_user_relation_t c
+        WHERE
+            a.id = c.role_id
+          AND b.id = c.user_id
+          AND b.id = #{userId}
+    </select>
+</mapper>

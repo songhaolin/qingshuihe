@@ -1,7 +1,7 @@
 package com.qingshuihe.common.infrastructure.security.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.qingshuihe.common.interfaces.outbond.login.LoginUserVo;
+import com.qingshuihe.common.interfaces.outbond.admin.vo.LoginUserVo;
 import com.qingshuihe.common.utils.SnowFlake;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.beans.factory.annotation.Autowired;

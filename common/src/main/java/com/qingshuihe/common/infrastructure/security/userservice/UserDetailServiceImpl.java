@@ -1,7 +1,7 @@
 package com.qingshuihe.common.infrastructure.security.userservice;
 
-import com.qingshuihe.common.domain.service.user.UserService;
-import com.qingshuihe.common.interfaces.outbond.login.LoginUserVo;
+import com.qingshuihe.common.domain.admin.user.UserService;
+import com.qingshuihe.common.interfaces.outbond.admin.vo.LoginUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
