@@ -2,6 +2,7 @@ package com.qingshuihe.common.infrastructure.security.filter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qingshuihe.common.interfaces.outbond.admin.vo.LoginUserVo;
+import com.qingshuihe.common.interfaces.outbond.admin.vo.UserVo;
 import com.qingshuihe.common.utils.CommonConstant;
 import com.qingshuihe.common.utils.JWTUtil;
 import com.qingshuihe.common.utils.StringUtils;
@@ -18,6 +19,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Description: JWTtoken控制过滤器，需要将这个过滤器加在（security用户名密码、权限过滤器）之前，这样可以避免掉一部分带有token请求的权限认证
@@ -52,6 +55,15 @@ public class JWTSecurityFilter extends OncePerRequestFilter {
                  * 这里将从token中获取的用户信息加入到认证管理器上下文中，这样就直接获取到了权限，不用再次通过认证了
                  * 新建的用户名密码权限管理器，将上面从redis中获取的权限信息直接塞进管理器，加入认证管理器上下文中即可
                  **/
+                //token成功，如果存在用户信息但不存在权限点信息，则为用户赋予默认的权限信息，保证能通过权限校验（例如重置密码时用户不存在权限点信息，但是redis中有用户信息）
+                if (loginUserVo.getPermissions()==null){
+                    List<String> permissons = new ArrayList<>();
+                    permissons.add(CommonConstant.DEFUALT_PERMISSION);
+                    loginUserVo.setPermissions(permissons);
+                    UserVo userVo = new UserVo();
+                    userVo.setUsername(username);
+                    loginUserVo.setUserVo(userVo);
+                }
                 //
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginUserVo, null, loginUserVo.getAuthorities());
                 //将用户信息放入security的上下文根中，不用再做权限认证了

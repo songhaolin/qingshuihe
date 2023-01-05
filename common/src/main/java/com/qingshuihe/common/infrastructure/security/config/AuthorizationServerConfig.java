@@ -73,7 +73,7 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
         //配置对请求的拦截策略。需要指定哪些用户可以访问哪些接口
         http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/swagger-ui/*", "/webjars/**", "/swagger-resources/**", "/v2/**", "/admin/login").anonymous()
+                .antMatchers("/swagger-ui/*", "/webjars/**", "/swagger-resources/**", "/v2/**", "/admin/login","/admin/sendResetLink","/admin/sendVerifyCode").anonymous()
 //                .antMatchers("/admin/**").hasRole("admin") 可以在这里从更大的面设置对于接口的权限限制，方法上的注解更为精细
                 .anyRequest()
                 .authenticated()

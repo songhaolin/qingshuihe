@@ -21,7 +21,7 @@ public class LoginUserVo implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 646270045569046754L;
 
-    private Integer id;
+    private Long id;
 
     private UserVo userVo;
 

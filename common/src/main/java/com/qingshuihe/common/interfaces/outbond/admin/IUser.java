@@ -14,4 +14,14 @@ public interface IUser {
 
     @ApiOperation(value = "/admin/queryUser",notes = "查询用户")
     ResultPageDo<RegisterUserVO> queryUser( QueryPageVo<RegisterUserVO> queryPageVo);
+
+    @ApiOperation(value = "/admin/resetpw",notes = "重置密码")
+    ResultDo resetpw( String pwd);
+
+    @ApiOperation(value = "/admin/sendResetLink",notes = "发送重置链接")
+    ResultDo sendResetLink( String email);
+
+    @ApiOperation(value = "/admin/sendVerifyCode",notes = "发送验证码")
+    ResultDo sendVerifyCode( String email);
+
 }

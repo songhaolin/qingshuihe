@@ -39,4 +39,24 @@ public class UserController implements IUser {
     public ResultPageDo<RegisterUserVO> queryUser(@RequestBody QueryPageVo<RegisterUserVO> queryPageVo) {
         return userService.queryUser(queryPageVo);
     }
+
+    @PostMapping("/admin/resetpw")
+    @Override
+    public ResultDo resetpw(String pwd) {
+        return userService.resetpw(pwd);
+    }
+
+    @PostMapping("/admin/sendResetLink")
+    @Override
+    public ResultDo sendResetLink(String email) {
+
+        return userService.sendResetLink(email);
+    }
+
+    @PostMapping("/admin/sendVerifyCode")
+    @Override
+    public ResultDo sendVerifyCode(String email) {
+
+        return userService.sendVerifyCode(email);
+    }
 }

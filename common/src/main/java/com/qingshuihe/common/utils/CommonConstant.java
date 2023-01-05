@@ -36,12 +36,21 @@ public interface CommonConstant {
     /**
      * @Description: 请求头的token
      * @Date: 2022/8/29
-     * @Param null:
      **/
     String TOKEN_STR = "token";
+    /**
+     * @Description: 重置密码时为用户设置的默认权限点
+     * @Date: 2023/1/5
+     **/
+    String DEFUALT_PERMISSION = "resetPassword";
 
     //mq日志topic
     String KAFKA_TOPIC_QINGSHUIHE_LOG = "qingshuiheLog";
     //mq日志group
     String KAFKA_GROUP_QINGSHUIHE_LOG ="qingshuiheLogGroup";
+
+    String REST_USER_NAME = "REST_USER_NAME";
+    String FRONT_PAGE_SETPW = "FRONT_PAGE_SETPW";
+    String VAILD_TIME = "VAILD_TIME";
+    String VERIFY_CODE = "VERIFY_CODE";
 }

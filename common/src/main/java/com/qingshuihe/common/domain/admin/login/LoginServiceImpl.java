@@ -35,7 +35,7 @@ public class LoginServiceImpl implements LoginService {
         /**
          * 将上述包含用户名、密码的token生成器塞入认证管理中，如果认证通过，会获得一个认证管理器对象
          * 其中认证的动作是先根据username获取userDetails对象，然后通过认证管理器去认证用户输入的信息与userDetails信息是否匹配
-         * 在UserDetailServiceImpl中实现获取userDetails对象
+         * 在UserDetailServiceImpl中实现获取userDetails对象,可以查看源码了解ProviderManager调用UserDetailServiceImpl.loadUserByUsername的过程
          * authenticationManager是在AuthorizationServerConfig中注册的一个bean,这里可以直接注入并使用其认证功能)
          **/
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);

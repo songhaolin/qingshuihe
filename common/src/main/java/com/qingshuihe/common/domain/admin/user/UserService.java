@@ -16,4 +16,11 @@ public interface UserService extends IService<UserEntity> {
 
     ResultDo modifyUser(RegisterUserVO registerUserVO);
     ResultPageDo<RegisterUserVO> queryUser(QueryPageVo<RegisterUserVO> queryPageVo);
+
+
+    ResultDo sendResetLink(String email);
+
+    ResultDo sendVerifyCode(String email);
+
+    ResultDo resetpw(String pwd);
 }
