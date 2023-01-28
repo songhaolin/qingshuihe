@@ -1,6 +1,6 @@
 package com.qingshuihe.common.interfaces.outbond.admin;
 
-import com.qingshuihe.common.infrastructure.exception.Resp;
+import com.qingshuihe.common.infrastructure.response.Resp;
 import com.qingshuihe.common.interfaces.outbond.admin.vo.UserVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

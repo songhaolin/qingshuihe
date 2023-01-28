@@ -1,5 +1,6 @@
-package com.qingshuihe.common.infrastructure.exception;
+package com.qingshuihe.common.infrastructure.response;
 
+import com.qingshuihe.common.infrastructure.exception.AppexcepitonCodeMsg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

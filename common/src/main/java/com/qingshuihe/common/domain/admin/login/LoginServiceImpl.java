@@ -3,7 +3,7 @@ package com.qingshuihe.common.domain.admin.login;
 import com.alibaba.fastjson.JSONObject;
 import com.qingshuihe.common.infrastructure.exception.AppexcepitonCodeMsg;
 import com.qingshuihe.common.infrastructure.exception.Appexception;
-import com.qingshuihe.common.infrastructure.exception.Resp;
+import com.qingshuihe.common.infrastructure.response.Resp;
 import com.qingshuihe.common.interfaces.outbond.admin.vo.LoginUserVo;
 import com.qingshuihe.common.interfaces.outbond.admin.vo.UserVo;
 import com.qingshuihe.common.interfaces.outbond.dto.LoginResultDo;

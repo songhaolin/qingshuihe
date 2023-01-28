@@ -2,7 +2,7 @@ package com.qingshuihe.common.infrastructure.exception.handler;
 
 import com.qingshuihe.common.infrastructure.exception.AppexcepitonCodeMsg;
 import com.qingshuihe.common.infrastructure.exception.Appexception;
-import com.qingshuihe.common.infrastructure.exception.Resp;
+import com.qingshuihe.common.infrastructure.response.Resp;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

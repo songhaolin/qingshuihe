@@ -1,7 +1,7 @@
 package com.qingshuihe.common.domain.admin.login;
 
 
-import com.qingshuihe.common.infrastructure.exception.Resp;
+import com.qingshuihe.common.infrastructure.response.Resp;
 import com.qingshuihe.common.interfaces.outbond.admin.vo.UserVo;
 
 /**

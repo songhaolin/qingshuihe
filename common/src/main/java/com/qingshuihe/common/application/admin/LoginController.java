@@ -1,7 +1,7 @@
 package com.qingshuihe.common.application.admin;
 
 import com.qingshuihe.common.domain.admin.login.LoginService;
-import com.qingshuihe.common.infrastructure.exception.Resp;
+import com.qingshuihe.common.infrastructure.response.Resp;
 import com.qingshuihe.common.interfaces.outbond.admin.ILogin;
 import com.qingshuihe.common.interfaces.outbond.admin.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
