@@ -1,9 +1,11 @@
 package com.qingshuihe.common.domain.admin.login;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qingshuihe.common.infrastructure.exception.AppexcepitonCodeMsg;
+import com.qingshuihe.common.infrastructure.exception.Appexception;
+import com.qingshuihe.common.infrastructure.exception.Resp;
 import com.qingshuihe.common.interfaces.outbond.admin.vo.LoginUserVo;
 import com.qingshuihe.common.interfaces.outbond.admin.vo.UserVo;
-import com.qingshuihe.common.interfaces.outbond.dto.BaseDto;
 import com.qingshuihe.common.interfaces.outbond.dto.LoginResultDo;
 import com.qingshuihe.common.utils.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,7 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Override
-    public LoginResultDo login(UserVo userVo) {
-        LoginResultDo loginResultDo = new LoginResultDo();
+    public Resp<String> login(UserVo userVo) {
         //将用户名、密码放入token生成器中，后续会塞入认证管理器中
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userVo.getUsername(), userVo.getPassword());
         /**
@@ -40,7 +41,7 @@ public class LoginServiceImpl implements LoginService {
          **/
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         if (null == authentication) {
-            throw new RuntimeException("认证失败！");
+            throw new Appexception(AppexcepitonCodeMsg.SYSTEM_ERROR);
         }
         //认证通过后，从认证结果中取出用户登陆鉴权图中的userDetails对象，这里需要自定义一个LoginUserVo对象继承spring提供的userDetails对象
         LoginUserVo loginUserVo = (LoginUserVo) authentication.getPrincipal();
@@ -51,25 +52,22 @@ public class LoginServiceImpl implements LoginService {
         try {
             stringRedisTemplate.opsForValue().set(loginUserVo.getUsername(), JSONObject.toJSONString(loginUserVo));
         } catch (Exception e) {
-
+            throw new Appexception(AppexcepitonCodeMsg.REDIS_CONNECTION_ERROR);
         }
         //使用username生成token,存入loginResultDo对象中返回请求方，作为下一次请求的凭证
         String token = JWTUtil.createJWT(loginUserVo.getUsername());
-        loginResultDo.setToken(token);
-        return loginResultDo;
+        return Resp.success(new LoginResultDo(token));
     }
 
     @Override
-    public BaseDto logout() {
+    public Resp<String> logout() {
 
         //从security上下文中获取通过JWTFilter过滤的鉴权信息
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoginUserVo loginUserVo = (LoginUserVo) authentication.getPrincipal();
         //清空redis中的用户信息
         stringRedisTemplate.delete(loginUserVo.getUsername());
-        BaseDto baseDto = new BaseDto();
-        baseDto.setMessage("登出成功！");
-        return baseDto;
+        return Resp.success();
     }
 
 

@@ -18,5 +18,12 @@ public interface IRole {
     @ApiOperation(value = "/admin/modifyRoleUserRelation",notes = "更改用户角色关联信息")
     ResultDo modifyRoleUserRelation( RoleUserRelationVo roleUserRelationVo);
 
+    @ApiOperation(value = "/admin/queryRoleById/{id}",notes = "根据Id查询角色")
+    RoleVo queryRoleById( Long id);
 
+    @ApiOperation(value = "/admin/deleteRoleById/{id}",notes = "根据Id删除角色")
+    ResultDo deleteRoleById( Long id);
+
+    @ApiOperation(value = "/admin/deleteRoleByIds",notes = "根据Id批量删除角色")
+    ResultDo deleteRoleByIds( Long[] ids);
 }

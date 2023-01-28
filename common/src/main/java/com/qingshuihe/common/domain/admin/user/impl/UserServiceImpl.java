@@ -28,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -179,6 +180,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         resultDo.setCode(registerUserVOResultDo.getCode());
         resultDo.setMessage(registerUserVOResultDo.getMessage());
         stringRedisTemplate.delete(registerUserVO.getUsername());
+        return resultDo;
+    }
+
+    @Override
+    public RegisterUserVO queryUserById(Long id) {
+        UserEntity userEntity = super.getById(id);
+        RegisterUserVO userVo = new RegisterUserVO();
+        BeanUtils.copyProperties(userEntity,userVo);
+        return userVo;
+    }
+
+    @Override
+    public ResultDo deleteUserById(Long id) {
+        ResultDo resultDo = new ResultDo<>();
+        if (!super.removeById(id)){
+            resultDo.setCode(CommonConstant.STATUS_ERROR);
+            resultDo.setMessage("删除用户失败");
+        }
+        return resultDo;
+    }
+
+    @Override
+    public ResultDo deleteUserByIds(Long[] ids) {
+        ResultDo resultDo = new ResultDo<>();
+        if (!super.removeByIds(Arrays.asList(ids))){
+            resultDo.setCode(CommonConstant.STATUS_ERROR);
+            resultDo.setMessage("批量删除用户失败");
+        }
         return resultDo;
     }
 

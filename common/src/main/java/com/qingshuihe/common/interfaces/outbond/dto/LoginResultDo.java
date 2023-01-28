@@ -2,7 +2,9 @@ package com.qingshuihe.common.interfaces.outbond.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Description:
@@ -11,7 +13,9 @@ import lombok.Data;
  **/
 @ApiModel(value = "登陆返回对象")
 @Data
-public class LoginResultDo extends BaseDto{
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginResultDo {
 
     /**
      * @Description: 登陆成功返回的有效的token

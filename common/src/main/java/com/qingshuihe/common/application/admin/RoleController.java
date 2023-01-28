@@ -48,4 +48,19 @@ public class RoleController implements IRole {
     public ResultDo modifyRoleUserRelation(@RequestBody RoleUserRelationVo roleUserRelationVo) {
         return roleUserRelationService.modifyRoleUserRelation(roleUserRelationVo);
     }
+
+    @Override
+    public RoleVo queryRoleById(Long id) {
+        return null;
+    }
+
+    @Override
+    public ResultDo deleteRoleById(Long id) {
+        return null;
+    }
+
+    @Override
+    public ResultDo deleteRoleByIds(Long[] ids) {
+        return null;
+    }
 }

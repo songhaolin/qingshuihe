@@ -2,9 +2,7 @@ package com.qingshuihe.common.domain.admin.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qingshuihe.common.domain.admin.user.entity.UserEntity;
-import com.qingshuihe.common.interfaces.outbond.admin.vo.LoginUserVo;
-import com.qingshuihe.common.interfaces.outbond.admin.vo.QueryPageVo;
-import com.qingshuihe.common.interfaces.outbond.admin.vo.RegisterUserVO;
+import com.qingshuihe.common.interfaces.outbond.admin.vo.*;
 import com.qingshuihe.common.interfaces.outbond.dto.ResultDo;
 import com.qingshuihe.common.interfaces.outbond.dto.ResultPageDo;
 
@@ -23,4 +21,11 @@ public interface UserService extends IService<UserEntity> {
     ResultDo sendVerifyCode(String email);
 
     ResultDo resetpw(String pwd);
+
+    RegisterUserVO queryUserById(Long id);
+
+    ResultDo deleteUserById(Long id);
+
+
+    ResultDo deleteUserByIds(Long[] ids);
 }
