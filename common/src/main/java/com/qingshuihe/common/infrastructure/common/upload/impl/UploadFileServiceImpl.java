@@ -41,6 +41,11 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Autowired
     private UploadProperties uploadProperties;
 
+    /**
+     * @Description: 多个文件上传
+     * @Date: 2023/2/2
+     * @Param files:
+     **/
     @Override
     public ResultDo<List<FileVo>> uploadFiles(MultipartFile[] files) {
         ArrayList<FileVo> fileVos = new ArrayList<>();
@@ -65,6 +70,12 @@ public class UploadFileServiceImpl implements UploadFileService {
         return WebResponseUtils.setSuccessResultDo(fileVos);
     }
 
+    /**
+     * @Description: 多个文件下载
+     * @Date: 2023/2/2
+     * @Param response:
+     * @Param fileIds:
+     **/
     @Override
     public void downloadFiles(HttpServletResponse response, List<String> fileIds) throws IOException {
         //清空返回的内容

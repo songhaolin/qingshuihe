@@ -34,7 +34,7 @@ public class PermissonServiceImpl extends ServiceImpl<PermissionMapper, Permissi
         if (StringUtils.isNotEmpty(permissionVo.getDescription())){
             lambdaQueryWrapper.like(PermissionEntity::getDescription,permissionVo.getDescription());
         }
-        permissionEntityPage = super.page(permissionEntityPage);
+        permissionEntityPage = this.page(permissionEntityPage,lambdaQueryWrapper);
         ResultPageDo<PermissionVo> permissionVoResultPageDo = new ResultPageDo<>();
         BeanUtils.copyProperties(permissionEntityPage,permissionVoResultPageDo);
         return permissionVoResultPageDo;
@@ -45,7 +45,7 @@ public class PermissonServiceImpl extends ServiceImpl<PermissionMapper, Permissi
         ResultDo permissionVoResultDo;
         PermissionEntity permissionEntity = new PermissionEntity();
         BeanUtils.copyProperties(permissionVo, permissionEntity);
-        if (!super.saveOrUpdate(permissionEntity)) {
+        if (!this.saveOrUpdate(permissionEntity)) {
             permissionVoResultDo = WebResponseUtils.setResultDo(CommonConstant.STATUS_ERROR, "更改权限信息失败！", permissionVo);
         } else {
             BeanUtils.copyProperties(permissionEntity, permissionVo);

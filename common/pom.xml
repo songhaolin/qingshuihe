@@ -103,7 +103,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
-
+<!--        ******************************************************esayexcel******************************************************-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+<!--        ******************************************************spring-validation,方便使用@valid@NotNull@NotEmpty等校验类的注解******************************************************-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
